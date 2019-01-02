@@ -1,0 +1,5 @@
+git push -f origin master
+
+git branch branch0
+
+git checkout branch0
