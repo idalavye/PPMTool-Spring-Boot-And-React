@@ -108,7 +108,7 @@ class AddProject extends Component {
                                     <div className="form-group">
                                         <input 
                                             type="date" 
-                                            class="form-control 
+                                            className="form-control 
                                             form-control-lg" 
                                             onChange={this.onChange}
                                             name="start_date"
@@ -118,13 +118,13 @@ class AddProject extends Component {
                                     <div className="form-group">
                                         <input 
                                             type="date" 
-                                            class="form-control form-control-lg" 
+                                            className="form-control form-control-lg" 
                                             name="end_date"
                                             onChange={this.onChange}
                                             value={this.state.end_date} />
                                     </div>
 
-                                    <input type="submit" class="btn btn-primary btn-block mt-4" />
+                                    <input type="submit" className="btn btn-primary btn-block mt-4" />
                                 </form>
                             </div>
                         </div>
@@ -137,7 +137,7 @@ class AddProject extends Component {
 
 AddProject.propTypes = {
     createProject :PropTypes.func.isRequired,
-    error:PropTypes.object.isRequired
+    errors:PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
