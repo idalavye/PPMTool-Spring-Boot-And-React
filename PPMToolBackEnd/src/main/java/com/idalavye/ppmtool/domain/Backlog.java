@@ -17,8 +17,15 @@ public class Backlog {
     @JoinColumn(name = "projectId", nullable = false)
     @JsonIgnore //it breaks infinite recursion
     private Project project;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "backlog")
+    @OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy = "backlog",orphanRemoval = true)
     private List<ProjectTask> projectTasks = new ArrayList<>();
+
+    /**
+     * orphanRemoval = true CascadeType.DELETE ile benzer bir işlevi görür. Bir child silindiği zaman
+     * otamatik olarak liste güncellenir. Ayrıca backlog silindiği zamanda tüm childlarında silinmesini sağlar.
+     *
+     * Source = https://www.objectdb.com/java/jpa/persistence/delete#Orphan_Removal_
+     */
 
     public Backlog() {
     }
