@@ -34,9 +34,9 @@ public class ProjectTaskService {
             projectTask.setProjectSequence(projectIdentifier.toUpperCase() + "-" + BacklogSequence);
             projectTask.setProjectIdentifier(projectIdentifier.toUpperCase());
 
-//        if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) {
-//            projectTask.setPriority(3);
-//        }
+            if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) {
+                projectTask.setPriority(3);
+            }
 
             if (projectTask.getStatus() == null || projectTask.getStatus() == "") {
                 projectTask.setStatus("TO_DO");
