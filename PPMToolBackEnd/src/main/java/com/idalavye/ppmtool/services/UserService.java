@@ -1,6 +1,7 @@
 package com.idalavye.ppmtool.services;
 
 import com.idalavye.ppmtool.domain.User;
+import com.idalavye.ppmtool.exceptions.UsernameAlreadyExistException;
 import com.idalavye.ppmtool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,8 +16,13 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder; //Şifrelerimizin okunmaması için encode ederek dbye kaydederiz
 
     public User saveUser(User newUser) {
-        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-
-        return userRepository.save(newUser);
+        try{
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            newUser.setUsername(newUser.getUsername());
+            newUser.setConfirmPassword("");
+            return userRepository.save(newUser);
+        }catch (Exception e){
+            throw new UsernameAlreadyExistException("Username '" + newUser.getUsername() + "' already exists");
+        }
     }
 }
