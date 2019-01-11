@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ERRORS } from './types';
+import { GET_ERRORS, GET_BACKLOG } from './types';
 
 export const addProjectTask = (backlog_id, project_task, history) => async dispatch => {
     try {
