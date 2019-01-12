@@ -64,8 +64,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    public User(){
-    }
+    public User(){ }
 
     @PrePersist
     protected void onCreate() {
