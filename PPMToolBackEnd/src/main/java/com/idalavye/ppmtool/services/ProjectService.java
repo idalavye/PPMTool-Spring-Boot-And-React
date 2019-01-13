@@ -24,6 +24,16 @@ public class ProjectService {
     private UserRepository userRepository;
 
     public Project saveOrUpdateProject(Project project, String username) {
+
+        if (project.getId() != null) {
+            Project existingProject = projectRepositories.findByProjectIdentifier(project.getProjectIdentifier());
+            if (existingProject != null && (!existingProject.getProjectLeader().equals(username))) {
+                throw new ProjectNotFoundException("Project not found in your account");
+            }else if(existingProject == null){
+                throw new ProjectNotFoundException("Project with ID : '" + project.getProjectIdentifier() + "' cannot be updated because it doesn't exists");
+            }
+        }
+
         try {
             User user = userRepository.findByUsername(username);
             project.setUser(user);
@@ -44,13 +54,12 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectId,String username) {
+    public Project findProjectByIdentifier(String projectId, String username) {
         Project project = projectRepositories.findByProjectIdentifier(projectId.toUpperCase());
         if (project == null) {
             throw new ProjectIdException("Project does not exist");
         }
-
-        if (!project.getProjectLeader().equals(username)){
+        if (!project.getProjectLeader().equals(username)) {
             throw new ProjectNotFoundException("Project not found in your account");
         }
         return project;
@@ -60,9 +69,8 @@ public class ProjectService {
         return projectRepositories.findAllByProjectLeader(username);
     }
 
-    public void deleteProjectByIdentifier(String projectId,String username) {
-
-        projectRepositories.delete(findProjectByIdentifier(projectId,username));
+    public void deleteProjectByIdentifier(String projectId, String username) {
+        projectRepositories.delete(findProjectByIdentifier(projectId, username));
     }
 
     public Project updateProject(String projectId) {
