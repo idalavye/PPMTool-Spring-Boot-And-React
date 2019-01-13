@@ -22,37 +22,34 @@ public class ProjectTaskService {
     @Autowired
     private ProjectRepositories projectRepositories;
 
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
-        try {
-            Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
-            projectTask.setBacklog(backlog);
+    @Autowired
+    private ProjectService projectService;
 
-            Integer BacklogSequence = backlog.getPTSequence();
-            BacklogSequence++;
-            backlog.setPTSequence(BacklogSequence);
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String username) {
 
-            projectTask.setProjectSequence(projectIdentifier.toUpperCase() + "-" + BacklogSequence);
-            projectTask.setProjectIdentifier(projectIdentifier.toUpperCase());
+        Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();//backlogRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
+        projectTask.setBacklog(backlog);
 
-            if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) {
-                projectTask.setPriority(3);
-            }
+        Integer BacklogSequence = backlog.getPTSequence();
+        BacklogSequence++;
+        backlog.setPTSequence(BacklogSequence);
 
-            if (projectTask.getStatus() == null || projectTask.getStatus() == "") {
-                projectTask.setStatus("TO_DO");
-            }
-            return projectTaskRepository.save(projectTask);
-        } catch (Exception e) {
-            throw new ProjectNotFoundException("Project Not Found");
+        projectTask.setProjectSequence(projectIdentifier.toUpperCase() + "-" + BacklogSequence);
+        projectTask.setProjectIdentifier(projectIdentifier.toUpperCase());
+
+        if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) {
+            projectTask.setPriority(3);
         }
+
+        if (projectTask.getStatus() == null || projectTask.getStatus() == "") {
+            projectTask.setStatus("TO_DO");
+        }
+        return projectTaskRepository.save(projectTask);
     }
 
 
-    public Iterable<ProjectTask> findBacklogById(String id) {
-        Project project = projectRepositories.findByProjectIdentifier(id.toUpperCase());
-        if (project == null) {
-            throw new ProjectNotFoundException(("Project with ID: '" + id + "' does not exist"));
-        }
+    public Iterable<ProjectTask> findBacklogById(String id, String username) {
+        projectService.findProjectByIdentifier(id, username);
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 
