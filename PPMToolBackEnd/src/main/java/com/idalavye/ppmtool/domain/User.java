@@ -26,7 +26,6 @@ public class User implements UserDetails {
     @NotBlank(message = "Password field is required")
     private String password;
     @Transient
-    @JsonIgnore
     private String confirmPassword;
     private Date created_At;
     private Date updated_At;
@@ -141,5 +140,19 @@ public class User implements UserDetails {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", created_At=" + created_At +
+                ", updated_At=" + updated_At +
+                ", projects=" + projects +
+                '}';
     }
 }
